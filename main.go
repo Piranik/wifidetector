@@ -30,6 +30,7 @@ func main() {
 	}
 
 	for pr := range resultChan {
+		log.Printf("Received probe request from %s", pr.HWAddr.String())
 		if db.PutProbeRequest(pr) {
 			pusher.DeviceFound(pr)
 		}

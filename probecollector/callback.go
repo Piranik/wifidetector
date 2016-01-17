@@ -4,7 +4,8 @@ package probecollector
 #include <stdint.h>
 */
 import "C"
-import "log"
+import "unsafe"
+
 import "net"
 import "time"
 
@@ -16,5 +17,13 @@ type ProbeRequest struct {
 
 //export pb_callback
 func pb_callback(mac *C.uint8_t, signal_strength C.int) {
-	log.Printf("Received mac %v with strength %d", mac, signal_strength)
+	macSlice := C.GoBytes(unsafe.Pointer(mac), 6)
+	//defer C.free(mac)
+	hwAddr := net.HardwareAddr(macSlice)
+	prequest := ProbeRequest{
+		HWAddr:         hwAddr,
+		SignalStrength: int(signal_strength),
+		Timestamp:      time.Now(),
+	}
+	resultChannel <- prequest
 }
