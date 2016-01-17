@@ -28,7 +28,7 @@ pcap_t *pcd = NULL;
 struct bpf_program bpg;
 
 typedef struct {
-    uint8_t radiotap_crap[34];
+    uint8_t radiotap_crap[32];
 
     uint8_t rssi;
     uint8_t antenna;
@@ -48,10 +48,10 @@ void pb_callback(uint8_t*, int);
 void packet_view(unsigned char *arg, const struct pcap_pkthdr *h,
                  const unsigned char *p) {
     prequest_t *pr = (prequest_t *) p;
-    uint8_t *mac = pr->source;
+    //uint8_t *mac = pr->source;
     int signal_strength = fabs((pr->rssi / 255.0 * 100) / 2 - 100);
 
-    pb_callback(mac, signal_strength);
+    pb_callback(pr->source, signal_strength);
 }
 
 static int configure_pcap(char *dev) {
