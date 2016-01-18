@@ -9,9 +9,9 @@ import (
 
 type Config struct {
 	OpenHABHost   string
-	WifiDevice    string `yaml:"wifidevice,omitempty"`
-	MonitorDevice string `yaml:"monitordevice,omitempty"`
-	MonitoredMACs map[string]string
+	WifiDevice    string            `yaml:"wifidevice,omitempty"`
+	MonitorDevice string            `yaml:"monitordevice,omitempty"`
+	MonitoredMACs map[string]string `yaml:"macs"`
 }
 
 var GlobalConfig Config
