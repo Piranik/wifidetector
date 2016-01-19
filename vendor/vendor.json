@@ -3,9 +3,19 @@
 	"ignore": "test",
 	"package": [
 		{
+			"path": "github.com/codegangsta/inject",
+			"revision": "33e0aa1cb7c019ccc3fbe049a8262a6403d30504",
+			"revisionTime": "2015-01-14T15:56:00-08:00"
+		},
+		{
 			"path": "github.com/dereulenspiegel/openhab-cli/openhab",
 			"revision": "61fa066399f32d7d1fb9ae990730dbedf12961b4",
 			"revisionTime": "2016-01-13T13:42:12+01:00"
+		},
+		{
+			"path": "github.com/go-martini/martini",
+			"revision": "15a47622d6a9b3e6a1eaca2681e4850f612471ea",
+			"revisionTime": "2015-11-14T15:27:12+01:00"
 		},
 		{
 			"path": "github.com/stretchr/testify/assert",
