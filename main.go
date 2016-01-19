@@ -8,6 +8,7 @@ import (
 	"github.com/dereulenspiegel/wifidetector/config"
 	"github.com/dereulenspiegel/wifidetector/probecollector"
 	"github.com/dereulenspiegel/wifidetector/push"
+	"github.com/dereulenspiegel/wifidetector/rest"
 	"github.com/dereulenspiegel/wifidetector/store"
 )
 
@@ -17,9 +18,10 @@ var (
 )
 
 func main() {
-	db = store.NewMemoryStore()
 	flag.Parse()
 	config.ParseConfig(*configFile)
+	db = store.NewMemoryStore()
+	go rest.InitRestAPI(db)
 	pusher := push.NewOpenHABPusher(config.GlobalConfig.OpenHABHost)
 	for mac, item := range config.GlobalConfig.MonitoredMACs {
 		pusher.AddMonitoredMAC(mac, item)

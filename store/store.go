@@ -7,7 +7,7 @@ import (
 	"github.com/dereulenspiegel/wifidetector/probecollector"
 )
 
-func ConvertHWAddr(hwaddr net.HardwareAddr) [6]byte {
+func ConvertHWAddr(hwaddr probecollector.HardwareAddr) [6]byte {
 	out := new([6]byte)
 	for i, _ := range out {
 		out[i] = hwaddr[i]
@@ -33,7 +33,7 @@ func NewMemoryStore() *MemoryStore {
 }
 
 func (m *MemoryStore) PutProbeRequest(proberequest probecollector.ProbeRequest) bool {
-	lastPR := m.FindLastProbeRequest(proberequest.HWAddr)
+	lastPR := m.FindLastProbeRequest(net.HardwareAddr(proberequest.HWAddr))
 	m.requestMap[ConvertHWAddr(proberequest.HWAddr)] = proberequest
 	return lastPR == nil
 }
@@ -51,7 +51,7 @@ func (m *MemoryStore) ExpireOlderThan(span time.Duration) []probecollector.Probe
 }
 
 func (m *MemoryStore) FindLastProbeRequest(hwaddr net.HardwareAddr) *probecollector.ProbeRequest {
-	searchKey := ConvertHWAddr(hwaddr)
+	searchKey := ConvertHWAddr(probecollector.HardwareAddr(hwaddr))
 	pr, exists := m.requestMap[searchKey]
 	if !exists {
 		return nil

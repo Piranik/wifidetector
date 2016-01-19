@@ -27,7 +27,7 @@ func (o *OpenHABPusher) AddMonitoredMAC(macAddress, itemName string) error {
 	if err != nil {
 		return err
 	}
-	key := store.ConvertHWAddr(hwAddr)
+	key := store.ConvertHWAddr(probecollector.HardwareAddr(hwAddr))
 	o.monitoredMACs[key] = itemName
 	return nil
 }
