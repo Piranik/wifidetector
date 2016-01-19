@@ -17,9 +17,6 @@ package probecollector
 
 #include <pcap/pcap.h>
 
-#define DEV "mon0"
-#define REPORT_INTERVAL_SEC 10
-
 #define BUFFSIZE 3000
 #define PROMISCUOUS 1
 #define IF_MACADDR   6
@@ -48,7 +45,6 @@ void pb_callback(uint8_t*, int);
 void packet_view(unsigned char *arg, const struct pcap_pkthdr *h,
                  const unsigned char *p) {
     prequest_t *pr = (prequest_t *) p;
-    //uint8_t *mac = pr->source;
     int signal_strength = fabs((pr->rssi / 255.0 * 100) / 2 - 100);
 
     pb_callback(pr->source, signal_strength);
@@ -60,7 +56,6 @@ static int configure_pcap(char *dev) {
     pcd = pcap_open_live(dev, BUFFSIZE, PROMISCUOUS, 1000, errbuf); // wait for 1 sec (1000 ms)
 
     if (!pcd) {
-        // syslog(LOG_ERR, "Could not open '" DEV "', got '%s'\n", errbuf);
         return 3;
     }
 
