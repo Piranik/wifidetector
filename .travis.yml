@@ -1,0 +1,15 @@
+language: go
+go:
+- 1.5
+env:
+- GO15VENDOREXPERIMENT=1
+install:
+- echo "Cross compile release build for Raspberry Pi"
+- cd ~
+- git clone https://github.com/raspberrypi/tools
+- cd -
+- export PATH=$PATH:~/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/
+- cp -r usr/* ~/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/libc/usr/
+script:
+- go test -v ./store
+- CC=arm-linux-gnueabihf-gcc GOOS=linux GOARCH=arm GOARM=6 CGO_ENABLED=1 go build -v -o wifidetector-arm -ldflags="-extld=$CC"
