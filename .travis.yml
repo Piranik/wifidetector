@@ -1,10 +1,11 @@
 language: go
+sudo: required
 go:
 - 1.5
 env:
 - GO15VENDOREXPERIMENT=1
 install:
-- apt-get install libpcap-dev:armhf
+- sudo apt-get install libpcap-dev:armhf
 - echo "Cross compile release build for Raspberry Pi"
 - cd ~
 - git clone https://github.com/raspberrypi/tools
