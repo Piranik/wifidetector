@@ -12,4 +12,4 @@ install:
 - cp -r usr/* ~/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf/libc/usr/
 script:
 # - go test -v ./store
-- env CC=arm-linux-gnueabihf-gcc GOOS=linux GOARCH=arm GOARM=6 CGO_ENABLED=1 go build -v -o wifidetector-arm -ldflags="-extld=$CC"
+- env CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ GOOS=linux GOARCH=arm GOARM=6 CGO_ENABLED=1 go build -x -v -o wifidetector-arm -ldflags="-extld=$CC"
