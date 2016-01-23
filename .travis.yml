@@ -5,6 +5,8 @@ go:
 env:
 - GO15VENDOREXPERIMENT=1
 install:
+- sudo dpkg --add-architecture armhf
+- sudo apt-get update
 - sudo apt-get install libpcap-dev:armhf
 - echo "Cross compile release build for Raspberry Pi"
 - cd ~
