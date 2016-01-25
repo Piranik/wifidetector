@@ -100,7 +100,7 @@ func init() {
 func SetupInterface(phyIface, interfaceName string) error {
 	// sudo iw phy phy0 interface add mon0 type monitor
 	// TODO test if this is workin as expected
-	cmd := exec.Command("sudo", "iw", "phy", "phy0", "interface", "add", interfaceName, "type", "monitor")
+	cmd := exec.Command("sudo", "iw", "phy", phyIface, "interface", "add", interfaceName, "type", "monitor")
 	_, err := cmd.CombinedOutput()
 	return err
 }

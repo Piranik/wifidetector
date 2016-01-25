@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"log"
+	"runtime"
 	"time"
 
 	"github.com/dereulenspiegel/wifidetector/config"
@@ -20,13 +21,29 @@ var (
 func main() {
 	flag.Parse()
 	config.ParseConfig(*configFile)
+
+	monitorDevice := config.GlobalConfig.MonitorDevice
+	if monitorDevice == "" {
+		monitorDevice = "mon0"
+	}
+
+	if runtime.GOOS == "linux" {
+		phyDevice := config.GlobalConfig.WifiDevice
+		if phyDevice == "" {
+			phyDevice = "phy0"
+		}
+		if err := probecollector.SetupInterface(phyDevice, monitorDevice); err != nil {
+			log.Fatalf("Can't setup interface %s to monitor mode: %v")
+		}
+	}
+
 	db = store.NewMemoryStore()
 	go rest.InitRestAPI(db)
 	pusher := push.NewOpenHABPusher(config.GlobalConfig.OpenHABHost)
 	for mac, item := range config.GlobalConfig.MonitoredMACs {
 		pusher.AddMonitoredMAC(mac, item)
 	}
-	resultChan, err := probecollector.StartCollection(config.GlobalConfig.MonitorDevice)
+	resultChan, err := probecollector.StartCollection(monitorDevice)
 	if err != nil {
 		log.Fatalf("Can't initialise probe collection: %v", err)
 	}
