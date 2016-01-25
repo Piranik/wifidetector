@@ -33,7 +33,7 @@ func main() {
 			phyDevice = "phy0"
 		}
 		if err := probecollector.SetupInterface(phyDevice, monitorDevice); err != nil {
-			log.Fatalf("Can't setup interface %s to monitor mode: %v")
+			log.Printf("Can't setup interface %s to monitor mode: %v", phyDevice, err)
 		}
 	}
 
