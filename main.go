@@ -36,7 +36,7 @@ func main() {
 		if db.PutProbeRequest(pr) {
 			pusher.DeviceFound(pr)
 		}
-		expiredPRs := db.ExpireOlderThan(time.Minute * 1)
+		expiredPRs := db.ExpireOlderThan(time.Minute * time.Duration(config.GlobalConfig.ExpireAfter))
 		for _, expiredPR := range expiredPRs {
 			pusher.DeviceLost(expiredPR)
 		}

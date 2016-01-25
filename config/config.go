@@ -12,6 +12,7 @@ type Config struct {
 	WifiDevice    string            `yaml:"wifidevice,omitempty"`
 	MonitorDevice string            `yaml:"monitordevice,omitempty"`
 	MonitoredMACs map[string]string `yaml:"macs"`
+	ExpireAfter   int               `yaml:"expireafter"`
 }
 
 var GlobalConfig Config
