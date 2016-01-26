@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"log"
-	"runtime"
 	"time"
 
 	"github.com/dereulenspiegel/wifidetector/config"
@@ -27,16 +26,6 @@ func main() {
 		monitorDevice = "mon0"
 	}
 
-	if runtime.GOOS == "linux" {
-		phyDevice := config.GlobalConfig.WifiDevice
-		if phyDevice == "" {
-			phyDevice = "phy0"
-		}
-		if err := probecollector.SetupInterface(phyDevice, monitorDevice); err != nil {
-			log.Printf("Can't setup interface %s to monitor mode: %v", phyDevice, err)
-		}
-	}
-
 	db = store.NewMemoryStore()
 	go rest.InitRestAPI(db)
 	pusher := push.NewOpenHABPusher(config.GlobalConfig.OpenHABHost)
@@ -49,7 +38,6 @@ func main() {
 	}
 
 	for pr := range resultChan {
-		log.Printf("Received probe request from %s", pr.HWAddr.String())
 		if db.PutProbeRequest(pr) {
 			pusher.DeviceFound(pr)
 		}

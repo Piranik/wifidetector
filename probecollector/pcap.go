@@ -25,11 +25,11 @@ pcap_t *pcd = NULL;
 struct bpf_program bpg;
 
 typedef struct {
-    uint8_t radiotap_stuff[32];
+    uint8_t radiotap_stuff[34];
 
     uint8_t rssi;
     uint8_t antenna;
-    uint16_t rx_flags;
+    //uint16_t rx_flags;
 
     uint16_t flags;
     uint16_t duration;

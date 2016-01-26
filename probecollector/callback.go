@@ -12,12 +12,18 @@ import (
 import "net"
 import "time"
 
+const (
+	ouiMask = 0x2
+)
+
 type HardwareAddr net.HardwareAddr
 
 type ProbeRequest struct {
 	HWAddr         HardwareAddr
 	SignalStrength int
 	Timestamp      time.Time
+	Firstseen      time.Time
+	Unique         bool
 }
 
 func (h HardwareAddr) MarshalJSON() ([]byte, error) {
@@ -41,6 +47,10 @@ func (h HardwareAddr) String() string {
 	return string(buf)
 }
 
+func isUnique(mac net.HardwareAddr) bool {
+	return mac[0]&ouiMask == 0
+}
+
 //export pb_callback
 func pb_callback(mac *C.uint8_t, signal_strength C.int) {
 	macSlice := C.GoBytes(unsafe.Pointer(mac), 6)
@@ -50,6 +60,7 @@ func pb_callback(mac *C.uint8_t, signal_strength C.int) {
 		HWAddr:         HardwareAddr(hwAddr),
 		SignalStrength: int(signal_strength),
 		Timestamp:      time.Now(),
+		Unique:         isUnique(hwAddr),
 	}
 	resultChannel <- prequest
 }
