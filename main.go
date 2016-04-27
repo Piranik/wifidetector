@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"log"
-	"time"
 
 	"github.com/dereulenspiegel/wifidetector/config"
 	"github.com/dereulenspiegel/wifidetector/probecollector"
@@ -32,7 +31,12 @@ func main() {
 	for mac, item := range config.GlobalConfig.MonitoredMACs {
 		pusher.AddMonitoredMAC(mac, item)
 	}
-	resultChan, err := probecollector.StartCollection(monitorDevice)
+
+	if err := probecollector.Init(monitorDevice); err != nil {
+		log.Panicf("Can't start collection: %v", err)
+	}
+	probecollector.Read()
+	/*resultChan, err := probecollector.StartCollection(monitorDevice)
 	if err != nil {
 		log.Fatalf("Can't initialise probe collection: %v", err)
 	}
@@ -45,5 +49,5 @@ func main() {
 		for _, expiredPR := range expiredPRs {
 			pusher.DeviceLost(expiredPR)
 		}
-	}
+	}*/
 }
